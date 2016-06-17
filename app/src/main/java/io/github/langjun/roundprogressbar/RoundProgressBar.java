@@ -1,6 +1,7 @@
 package io.github.langjun.roundprogressbar;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -32,30 +33,39 @@ public class RoundProgressBar extends View {
 
 	public RoundProgressBar(Context context) {
 		super(context);
-		initProgressBar();
+		initProgressBar(null);
 		initPaint();
 	}
 
 	public RoundProgressBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		initProgressBar();
+		initProgressBar(attrs);
 		initPaint();
 	}
 
 	public RoundProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		initProgressBar();
+		initProgressBar(attrs);
 		initPaint();
 	}
 
 	/**
 	 * 初始化ProgressBar需要的参数
 	 */
-	private void initProgressBar() {
-		mMax = DEFAULT_MAX_VALUE;
-		mProgress = DEFAULT_PROGRESS_VALUE;
-		mCircleColor = DEFAULT_CIRCLE_COLOR;
-		mCircleWidth = DEFAULT_CIRCLE_WIDTH;
+	private void initProgressBar(AttributeSet attrs) {
+
+		if (attrs != null) {
+			TypedArray t = getContext().obtainStyledAttributes(attrs, R.styleable.RoundProgressBar);
+			mMax = t.getInteger(R.styleable.RoundProgressBar_maxValue, DEFAULT_MAX_VALUE);
+			mCircleColor = t.getColor(R.styleable.RoundProgressBar_circleColor, DEFAULT_CIRCLE_COLOR);
+			mCircleWidth = t.getInteger(R.styleable.RoundProgressBar_circleWidth, DEFAULT_CIRCLE_WIDTH);
+			t.recycle();
+		} else {
+			mMax = DEFAULT_MAX_VALUE;
+			mProgress = DEFAULT_PROGRESS_VALUE;
+			mCircleColor = DEFAULT_CIRCLE_COLOR;
+			mCircleWidth = DEFAULT_CIRCLE_WIDTH;
+		}
 	}
 
 	/**
@@ -88,8 +98,7 @@ public class RoundProgressBar extends View {
 	/**
 	 * 绘制
 	 *
-	 * @param canvas
-	 *            Canvas
+	 * @param canvas Canvas
 	 */
 	private void drawTrack(Canvas canvas) {
 		int width = getWidth();
@@ -122,8 +131,7 @@ public class RoundProgressBar extends View {
 	/**
 	 * 设置当前进度
 	 *
-	 * @param progress
-	 *            进度
+	 * @param progress 进度
 	 */
 	public synchronized void setProgress(int progress) {
 		if (progress > mMax) {
@@ -142,10 +150,18 @@ public class RoundProgressBar extends View {
 	}
 
 	/**
+	 * 获取当前进度
+	 *
+	 * @return 进度
+	 */
+	public int getProgress() {
+		return mProgress;
+	}
+
+	/**
 	 * 设置最大值
 	 *
-	 * @param max
-	 *            最大值
+	 * @param max 最大值
 	 */
 	public synchronized void setMax(int max) {
 		if (max < 0) {
@@ -164,10 +180,18 @@ public class RoundProgressBar extends View {
 	}
 
 	/**
+	 * 获取最大值
+	 *
+	 * @return 最大值
+	 */
+	public int getMax() {
+		return mMax;
+	}
+
+	/**
 	 * 设置圆环的宽度
 	 *
-	 * @param circleWidth
-	 *            宽度
+	 * @param circleWidth 宽度
 	 */
 	public void setCircleWidth(int circleWidth) {
 		if (mCircleWidth != circleWidth) {
@@ -180,8 +204,7 @@ public class RoundProgressBar extends View {
 	/**
 	 * 用于设置圆环颜色
 	 *
-	 * @param circleColor
-	 *            颜色
+	 * @param circleColor 颜色
 	 */
 	public void setCircleColor(int circleColor) {
 		if (mCircleColor != circleColor) {

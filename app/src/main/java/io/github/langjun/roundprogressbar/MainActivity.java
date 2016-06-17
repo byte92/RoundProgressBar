@@ -19,7 +19,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		mProgressBar = (RoundProgressBar) findViewById(R.id.bar);
-		mProgressBar.setMax(1000);
 		listener = new IUpdateStatus() {
 			public int progress = 0;
 
@@ -27,11 +26,16 @@ public class MainActivity extends Activity {
 			public void onProgress() {
 				mProgressBar.setProgress(progress);
 				progress += 1;
+
+				// DEMO 中达到最大值重新随机生成进度值
+				if (mProgressBar.getProgress() >= mProgressBar.getMax()) {
+					resetProgress();
+				}
 			}
 
 			@Override
 			public void resetProgress() {
-				progress = (int) Math.floor(Math.random() * 1000) + 1;
+				progress = (int) Math.floor(Math.random() * mProgressBar.getMax()) + 1;
 				Log.i(TAG, "Random=" + progress);
 			}
 		};
