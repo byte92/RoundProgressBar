@@ -3,6 +3,9 @@
 > 因一个需求需要用到一个圆环的ProgressBar, 实现之后提供给大家参考
 
 ## ChangeLog
+### v0.3
+- 支持XML设置width/height为"wrap_content"
+
 ### v0.2
 - 添加自定义属性
 

@@ -23,6 +23,8 @@ public class RoundProgressBar extends View {
 	private static final int DEFAULT_CIRCLE_COLOR = Color.BLACK;
 	private static final int DEFAULT_CIRCLE_WIDTH = 20;
 	private static final int DEFAULT_ZERO_DEGREE = -90; // 椭圆默认0°角为三点钟方向开始,默认-90°将调整为12点钟方向
+	private static final int DEFAULT_WIDTH = 200;
+	private static final int DEFAULT_HEIGHT = 200;
 
 	private Paint mPaint;
 	private int mCircleColor;
@@ -86,6 +88,24 @@ public class RoundProgressBar extends View {
 	private void refreshPaint() {
 		mPaint.setStrokeWidth(mCircleWidth);
 		mPaint.setColor(mCircleColor);
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+		int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+		int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+		int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+		int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+
+		if(widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
+			setMeasuredDimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		} else if(widthSpecMode == MeasureSpec.AT_MOST) {
+			setMeasuredDimension(DEFAULT_WIDTH, widthSpecSize);
+		} else if(heightSpecMode == MeasureSpec.AT_MOST) {
+			setMeasuredDimension(heightSpecSize, DEFAULT_HEIGHT);
+		}
 	}
 
 	@Override
